@@ -67,10 +67,14 @@ const useVoiceAudioAnalyzer = () => {
                     currentSpeaking.add(odePeerId);
                 }
 
-                // Update border for remote user video
+                // Update border and voice wave indicator for remote user video
                 const userWrapper = document.querySelector(`.user-video-${odePeerId}`) as HTMLElement;
                 if (userWrapper) {
                     userWrapper.style.borderColor = isSpeaking ? '#2196F3' : 'black';
+                    const voiceWaveIndicator = userWrapper.querySelector('.voice-wave-indicator') as HTMLElement;
+                    if (voiceWaveIndicator) {
+                        voiceWaveIndicator.style.display = isSpeaking ? 'flex' : 'none';
+                    }
                 }
             });
             setSpeakingUsers(currentSpeaking);

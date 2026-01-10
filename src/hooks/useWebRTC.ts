@@ -363,6 +363,38 @@ export default function useWebRTC(roomId: string) {
         userLabel.style.gap = "6px";
         userLabel.innerHTML = user.userName;
 
+        const voiceWave = document.createElement("div");
+        voiceWave.className = "voice-wave-indicator";
+        voiceWave.style.position = "absolute";
+        voiceWave.style.top = "12px";
+        voiceWave.style.right = "12px";
+        voiceWave.style.borderRadius = "50%";
+        voiceWave.style.height = "30px";
+        voiceWave.style.width = "30px";
+        voiceWave.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
+        voiceWave.style.color = "white";
+        voiceWave.style.fontSize = "14px";
+        voiceWave.style.fontWeight = "500";
+        voiceWave.style.display = "none";
+        voiceWave.style.alignItems = "center";
+        voiceWave.style.justifyContent = "center";
+        voiceWave.innerHTML = `<svg width="80" height="60" viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg">
+            <rect x="25" y="20" width="8" height="20" rx="3" fill="white">
+                <animate attributeName="height" values="10;30;10" dur="1s" repeatCount="indefinite" />
+                <animate attributeName="y" values="25;15;25" dur="1s" repeatCount="indefinite" />
+            </rect>
+
+            <rect x="36" y="15" width="8" height="30" rx="3" fill="white">
+                <animate attributeName="height" values="15;40;15" dur="1s" begin="0.15s" repeatCount="indefinite" />
+                <animate attributeName="y" values="22;10;22" dur="1s" begin="0.15s" repeatCount="indefinite" />
+            </rect>
+
+            <rect x="47" y="20" width="8" height="20" rx="3" fill="white">
+                <animate attributeName="height" values="10;30;10" dur="1s" begin="0.3s" repeatCount="indefinite" />
+                <animate attributeName="y" values="25;15;25" dur="1s" begin="0.3s" repeatCount="indefinite" />
+            </rect>
+        </svg>`;
+
         if (user.isCameraOff) {
             video.style.display = "none";
         }
@@ -370,6 +402,7 @@ export default function useWebRTC(roomId: string) {
         wrapper.appendChild(video);
         wrapper.appendChild(avatarOverlay);
         wrapper.appendChild(userLabel);
+        wrapper.appendChild(voiceWave);
 
         const container = document.getElementById("video-grid");
         container?.appendChild(wrapper);

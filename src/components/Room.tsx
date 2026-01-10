@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { selectMeetingState } from '../state/features/liveInterview/liveInterview.selector';
 import PeopleBar from './PeopleBar';
 import { isEmpty } from '../utils/core.utils';
+import WaveAnimation from '../assets/WaveAnimation';
 
 export interface User {
     userId: string;
@@ -162,6 +163,11 @@ export default function Room() {
                                 <Box className={Style.myVideoLabel}>
                                     You
                                 </Box>
+                                {isMeSpeaking && (
+                                    <Box className={Style.myVoiceWave}>
+                                        <WaveAnimation />
+                                    </Box>
+                                )}
                             </Box>
 
                             {/* AI Assistant Avatar */}
