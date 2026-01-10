@@ -6,6 +6,7 @@ import { random6DigitCode } from "../utils/core.utils";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../state/store";
 import { setMeetingUserRole } from "../state/features/liveInterview/liveInterview.slice";
+import WarningMobileValidation from "./WarningMobileValidation";
 
 export default function Home() {
     const dispatch = useDispatch<AppDispatch>();
@@ -33,6 +34,10 @@ export default function Home() {
         setRoomId("");
     }
 
+    if (window.innerWidth < 768) {
+        return <WarningMobileValidation />;
+    }
+
     return (
         <>
             <Box sx={{
@@ -46,7 +51,7 @@ export default function Home() {
             }}>
                 <Box>
                     <img src={'/discushy_logo_banner.png'} alt="Logo" width={200} height={0} style={{ height: 'auto' }} />
-                    <Typography variant="body1" sx={{my: 1}}>Start or join a discussion room</Typography>
+                    <Typography variant="body1" sx={{ my: 1 }}>Start or join a discussion room</Typography>
                     <Button onClick={createRoom} startIcon={<AddIcon />}>Create New Room</Button>
                 </Box>
 
