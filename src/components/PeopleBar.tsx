@@ -7,18 +7,16 @@ interface IProps {
     role: MeetingRole;
     voiceModel: string;
     isMicOn: boolean;
-    myUserId: number;
     onToggleMic: () => void;
 }
 
-const PeopleBar = ({ voiceModel, role, isMicOn, myUserId, users, onToggleMic }: IProps) => {
+const PeopleBar = ({ voiceModel, role, isMicOn, users, onToggleMic }: IProps) => {
     console.log('voiceModel #', voiceModel);
     return (
         <Box sx={{ width: 260, borderLeft: 1, borderColor: "divider", display: "flex", flexDirection: "column" }}>
-            <Box sx={{ px: 2, py: 1.5, borderBottom: 1, borderColor: "divider", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            {/* <Box sx={{ px: 2, py: 1.5, borderBottom: 1, borderColor: "divider", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box sx={{ fontWeight: 600 }}>People ({[myUserId, ...Array.from(new Set(users))].length} / 4)</Box>
-                {/* <Button onClick={() => setChatOpen((v) => !v)} sx={{ px: 1.5, py: 0.5, borderRadius: 1, bgcolor: "action.hover", border: "none", cursor: "pointer" }}>{chatOpen ? "Close" : "Chat"}</Button> */}
-            </Box>
+            </Box> */}
 
             <Box sx={{ p: 2, display: "flex", flexDirection: "column", gap: 1.25, overflowY: "auto" }}>
                 {/* <Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>

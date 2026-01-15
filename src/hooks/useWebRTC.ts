@@ -395,6 +395,25 @@ export default function useWebRTC(roomId: string) {
             </rect>
         </svg>`;
 
+        const mutedIcon = document.createElement("div");
+        mutedIcon.className = "muted-icon-indicator";
+        mutedIcon.style.position = "absolute";
+        mutedIcon.style.top = "12px";
+        mutedIcon.style.right = "12px";
+        mutedIcon.style.borderRadius = "50%";
+        mutedIcon.style.height = "30px";
+        mutedIcon.style.width = "30px";
+        mutedIcon.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
+        mutedIcon.style.color = "white";
+        mutedIcon.style.display = user.isMuted ? "flex" : "none";
+        mutedIcon.style.alignItems = "center";
+        mutedIcon.style.justifyContent = "center";
+        mutedIcon.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.1 6c0-2.707 2.193-4.9 4.9-4.9 2.707 0 4.9 2.193 4.9 4.9v.3a.9.9 0 11-1.8 0V6c0-1.713-1.387-3.1-3.1-3.1A3.099 3.099 0 008.9 6v5a.9.9 0 11-1.8 0V6zM16 10.1a.9.9 0 01.9.9v.5c0 2.707-2.193 4.9-4.9 4.9a4.872 4.872 0 01-3.629-1.607.9.9 0 111.338-1.205A3.073 3.073 0 0012 14.6c1.713 0 3.1-1.387 3.1-3.1V11a.9.9 0 01.9-.9z"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M19.65 8.75a.9.9 0 01.9.9v1.7c0 4.717-3.833 8.55-8.55 8.55a8.548 8.548 0 01-5.832-2.29.9.9 0 111.224-1.32 6.756 6.756 0 0011.358-4.94v-1.7a.9.9 0 01.9-.9zM4.35 8.75a.9.9 0 01.9.9v1.7c0 .939.186 1.82.529 2.629a.9.9 0 01-1.658.702 8.489 8.489 0 01-.671-3.33v-1.7a.9.9 0 01.9-.9z"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M20.706 2.204a.9.9 0 010 1.272l-16.14 16.15a.9.9 0 11-1.273-1.272l16.14-16.15a.9.9 0 011.273 0zM11 2.1a.9.9 0 01.9.9v3a.9.9 0 11-1.8 0V3a.9.9 0 01.9-.9zM12 18.1a.9.9 0 01.9.9v3a.9.9 0 11-1.8 0v-3a.9.9 0 01.9-.9z"/>
+        </svg>`;
+
         if (user.isCameraOff) {
             video.style.display = "none";
         }
@@ -403,6 +422,7 @@ export default function useWebRTC(roomId: string) {
         wrapper.appendChild(avatarOverlay);
         wrapper.appendChild(userLabel);
         wrapper.appendChild(voiceWave);
+        wrapper.appendChild(mutedIcon);
 
         const container = document.getElementById("video-grid");
         container?.appendChild(wrapper);
@@ -515,6 +535,17 @@ export default function useWebRTC(roomId: string) {
                 setUsers((prevUsers) =>
                     prevUsers.map((u) => (u.userId === user.userId ? { ...u, isMuted: user.isMuted } : u))
                 );
+                const videoWrapper = document.querySelector(".user-video-" + user.userId);
+                if (videoWrapper) {
+                    const mutedIcon = videoWrapper.querySelector(".muted-icon-indicator") as HTMLElement;
+                    const voiceWave = videoWrapper.querySelector(".voice-wave-indicator") as HTMLElement;
+                    if (mutedIcon) {
+                        mutedIcon.style.display = user.isMuted ? "flex" : "none";
+                    }
+                    if (voiceWave && user.isMuted) {
+                        voiceWave.style.display = "none";
+                    }
+                }
             });
 
             socket.on("camera-toggled", (user: IMeetingParticipant) => {

@@ -6,8 +6,10 @@ import { socket } from "../socket";
 import { selectMeetingState } from "../state/features/liveInterview/liveInterview.selector";
 import { DEFAULT_INVITE_MESSAGE } from "../utils/core.utils";
 import RoomDevice from "./RoomDevice";
+import { IMeetingParticipant } from "../room.interface";
 
 interface IProps {
+    users: IMeetingParticipant[];
     roomId: string;
     isCameraOn: boolean;
     isMicOn: boolean;
@@ -16,10 +18,10 @@ interface IProps {
     onToggleCamera: () => void;
     onToggleMic: () => void;
     onToggleScreenShare: () => void;
+    onPeopleDrawerToggle?: () => void;
 }
 
-
-const RoomHeader = ({ roomId, isCameraOn, isMicOn, isScreenSharing, onEndMeeting, onToggleCamera, onToggleMic, onToggleScreenShare }: IProps) => {
+const RoomHeader = ({ users, roomId, isCameraOn, isMicOn, isScreenSharing, onEndMeeting, onToggleCamera, onToggleMic, onToggleScreenShare, onPeopleDrawerToggle }: IProps) => {
     const { meetingUser } = useSelector(selectMeetingState);
     const [currentTime, setCurrentTime] = useState<string>(new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
     const [endMeetingModal, setEndMeetingModal] = useState<boolean>(false);
@@ -81,12 +83,14 @@ const RoomHeader = ({ roomId, isCameraOn, isMicOn, isScreenSharing, onEndMeeting
                     <Box sx={{ px: 2, py: 0.75, borderRadius: 1, bgcolor: "action.hover" }}>{currentTime}</Box>
                     <Box sx={{ px: 2, py: 0.75, borderRadius: 1, bgcolor: "action.hover" }}>{meetingUser.name}</Box>
                     <RoomDevice
+                        users={users}
                         isCameraOn={isCameraOn}
                         isMicOn={isMicOn}
                         isScreenSharing={isScreenSharing}
                         onToggleCamera={onToggleCamera}
                         onToggleMic={onToggleMic}
                         onToggleScreenShare={onToggleScreenShare}
+                        onPeopleDrawerToggle={onPeopleDrawerToggle}
                     />
                     {meetingUser.role == 'host' &&
                         <Button onClick={() => setEndMeetingModal(true)} color="warning">End Meeting</Button>

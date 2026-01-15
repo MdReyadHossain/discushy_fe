@@ -1,16 +1,16 @@
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
-import { Avatar, Box, IconButton } from "convertupleads-theme";
-import { useEffect, useRef, useState } from "react";
+import { Avatar, Box, DrawerWithHeader, IconButton, MicrophoneOffSmallIcon } from "convertupleads-theme";
+import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 import { useParams } from "react-router-dom";
+import WaveAnimation from '../assets/WaveAnimation';
 import useWebRTC from "../hooks/useWebRTC";
+import { selectMeetingState } from '../state/features/liveInterview/liveInterview.selector';
+import { isEmpty } from '../utils/core.utils';
+import PeopleBar from './PeopleBar';
 import RoomHeader from "./RoomHeader";
 import Style from './room.module.css';
-import { useSelector } from 'react-redux';
-import { selectMeetingState } from '../state/features/liveInterview/liveInterview.selector';
-import PeopleBar from './PeopleBar';
-import { isEmpty } from '../utils/core.utils';
-import WaveAnimation from '../assets/WaveAnimation';
 
 export interface User {
     userId: string;
@@ -18,8 +18,6 @@ export interface User {
 }
 
 export default function Room() {
-    const myUserIdRef = useRef<number>(10000 + Math.floor(Math.random() * 900000));
-    const myUserId = myUserIdRef.current;
     const { roomId } = useParams<{ roomId: string }>();
     const { meetingUser } = useSelector(selectMeetingState);
     const {
@@ -39,6 +37,7 @@ export default function Room() {
         isMeSpeaking
     } = useWebRTC(roomId || '');
     const [isSharedScreenFull, setIsSharedScreenFull] = useState<boolean>(false);
+    const [isPeopleDrawerOpen, setIsPeopleDrawerOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (isEmpty(meetingUser.name)) window.location.assign('/');
@@ -47,9 +46,10 @@ export default function Room() {
         }
     }, [screenShareStream]);
     return (
-        <Box sx={{ display: "flex", flexDirection: "column", height: "100vh", bgcolor: "background.default" }}>
+        <Box className={Style.roomContainer}>
             {/* Top Bar */}
             <RoomHeader
+                users={users}
                 roomId={roomId || ''}
                 isCameraOn={isCameraOn}
                 isMicOn={isMicOn}
@@ -58,45 +58,21 @@ export default function Room() {
                 onToggleCamera={toggleCamera}
                 onToggleMic={toggleMic}
                 onToggleScreenShare={toggleScreenShare}
+                onPeopleDrawerToggle={() => setIsPeopleDrawerOpen(true)}
             />
 
             {/* Content Area */}
-            <Box sx={{ display: "flex", flex: 1, overflow: "hidden", flexDirection: "column" }}>
+            <Box className={Style.contentArea}>
                 {/* Screen Share Display */}
                 {screenShareStream && (
-                    <Box sx={{
-                        width: '100%',
-                        height: isSharedScreenFull ? '100%' : '75%',
-                        bgcolor: '#1f1f1f',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        position: 'relative',
-                        borderBottom: '2px solid #333'
-                    }}>
+                    <Box className={`${Style.screenShareContainer} ${isSharedScreenFull ? Style.screenShareContainerFull : Style.screenShareContainerDefault}`}>
                         <video
                             ref={screenVideoRef}
                             autoPlay
                             playsInline
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'contain',
-                                backgroundColor: '#1f1f1f'
-                            }}
+                            className={Style.screenShareVideo}
                         />
-                        <Box sx={{
-                            position: 'absolute',
-                            bottom: 12,
-                            left: 12,
-                            px: 1.5,
-                            py: 0.5,
-                            borderRadius: 1,
-                            bgcolor: 'rgba(0,0,0,0.7)',
-                            color: 'white',
-                            fontSize: 14,
-                            fontWeight: 500
-                        }}>
+                        <Box className={Style.screenShareLabel}>
                             {screenShareUser === userId ? 'You are sharing your screen' : `Screen shared by ${users.find(u => u.userId === screenShareUser)?.userName || 'User'}`}
                         </Box>
                         <IconButton
@@ -119,25 +95,33 @@ export default function Room() {
                     </Box>
                 )}
 
-                <Box sx={{ display: (isSharedScreenFull && screenShareStream) ? "none" : "flex", flex: 1, overflow: "hidden" }}>
+                <Box className={`${Style.videoGridWrapper} ${(isSharedScreenFull && screenShareStream) ? Style.videoGridWrapperHidden : ''}`}>
                     {/* Video Grid Stage */}
                     <Box className={Style.videoContainer}>
                         <Box
                             id="video-grid"
                             className={Style.videoGrid}
                             sx={{
-                                gridTemplateColumns: screenShareStream ? "repeat(4, 1fr)" :
-                                    users.length > 0 ? "repeat(2, 1fr)" : "repeat(1, 1fr)",
+                                gridTemplateColumns: screenShareStream
+                                    ? "repeat(6, 1fr)"
+                                    : users.length === 0
+                                        ? "repeat(1, 1fr)"
+                                        : users.length === 1
+                                            ? "repeat(2, 1fr)"
+                                            : users.length === 2
+                                                ? "repeat(2, 1fr)"
+                                                : "repeat(3, 1fr)",
+                                gridTemplateRows: screenShareStream
+                                    ? "1fr"
+                                    : users.length <= 1
+                                        ? "1fr"
+                                        : "repeat(2, 1fr)",
                                 gridAutoRows: "1fr"
                             }}
                         >
                             {/* My Video */}
                             <Box
-                                className={Style.myVideoBox}
-                                sx={{
-                                    border: isMeSpeaking ? '2px solid #2196F3' : '2px solid black',
-                                    transition: 'border-color 0.2s ease-in-out',
-                                }}
+                                className={`${Style.myVideoBox} ${isMeSpeaking ? Style.myVideoBoxSpeaking : Style.myVideoBoxNotSpeaking}`}
                             >
                                 <video
                                     ref={myVideoRef}
@@ -163,7 +147,11 @@ export default function Room() {
                                 <Box className={Style.myVideoLabel}>
                                     You
                                 </Box>
-                                {isMeSpeaking && (
+                                {!isMicOn ? (
+                                    <Box className={Style.myMutedIcon}>
+                                        <MicrophoneOffSmallIcon sx={{ fontSize: 20 }} />
+                                    </Box>
+                                ) : (isMeSpeaking) && (
                                     <Box className={Style.myVoiceWave}>
                                         <WaveAnimation />
                                     </Box>
@@ -195,15 +183,20 @@ export default function Room() {
                         </Box>
                     </Box>
 
-                    {/* Sidebar */}
-                    <PeopleBar
-                        users={users}
-                        role={meetingUser.role}
-                        voiceModel={"Sofia"}
-                        isMicOn={isMicOn}
-                        myUserId={myUserId}
-                        onToggleMic={toggleMic}
-                    />
+                    <DrawerWithHeader
+                        anchor="right"
+                        header={`People (${users.length + 2})`}
+                        open={isPeopleDrawerOpen}
+                        onClose={() => setIsPeopleDrawerOpen(false)}
+                    >
+                        <PeopleBar
+                            users={users}
+                            role={meetingUser.role}
+                            voiceModel={"Sofia"}
+                            isMicOn={isMicOn}
+                            onToggleMic={toggleMic}
+                        />
+                    </DrawerWithHeader>
                 </Box>
             </Box>
         </Box>

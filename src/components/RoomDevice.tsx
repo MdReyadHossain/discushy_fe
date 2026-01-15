@@ -1,17 +1,29 @@
-import { Button, ButtonGroup, MicrophoneOffSmallIcon, MicrophoneSmallIcon, Tooltip, VideoIcon, VideoOffIcon } from "convertupleads-theme";
+import { AudienceIcon, Button, ButtonGroup, MicrophoneOffSmallIcon, MicrophoneSmallIcon, Tooltip, VideoIcon, VideoOffIcon } from "convertupleads-theme";
 import AirplayIcon from '@mui/icons-material/Airplay';
 import { useRef } from "react";
+import { IMeetingParticipant } from "../room.interface";
 
 type RoomDeviceProps = {
+    users: IMeetingParticipant[];
     isCameraOn: boolean;
     isMicOn: boolean;
     isScreenSharing: boolean;
     onToggleCamera: () => void;
     onToggleMic: () => void;
     onToggleScreenShare: () => void;
+    onPeopleDrawerToggle?: () => void;
 };
 
-const RoomDevice = ({ isCameraOn, isMicOn, isScreenSharing, onToggleCamera, onToggleMic, onToggleScreenShare }: RoomDeviceProps) => {
+const RoomDevice = ({
+    users,
+    isCameraOn,
+    isMicOn,
+    isScreenSharing,
+    onToggleCamera,
+    onToggleMic,
+    onToggleScreenShare,
+    onPeopleDrawerToggle
+}: RoomDeviceProps) => {
     const anchorRef = useRef<HTMLDivElement | null>(null);
 
     return (
@@ -24,6 +36,17 @@ const RoomDevice = ({ isCameraOn, isMicOn, isScreenSharing, onToggleCamera, onTo
                     sx={{ width: '20px', height: '36px' }}
                 >
                     <AirplayIcon />
+                </Button>
+            </Tooltip>
+
+            <Tooltip title={`People (${users.length + 2})`}>
+                <Button
+                    variant={'outlined'}
+                    color={'primary'}
+                    onClick={onPeopleDrawerToggle}
+                    sx={{ width: '20px', height: '36px' }}
+                >
+                    <AudienceIcon />
                 </Button>
             </Tooltip>
 

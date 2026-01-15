@@ -1,12 +1,13 @@
-import { AddIcon, Box, Button, Divider, FormLabel, ModalWithHeader, TextField, Typography } from "convertupleads-theme";
+import { AddIcon, Box, Button, LoginIcon, ModalWithHeader, TextField, Typography } from "convertupleads-theme";
 import { useState } from "react";
-import JoinRoomModal from "./JoinRoomModal";
-import { toast } from "react-toastify";
-import { random6DigitCode } from "../utils/core.utils";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../state/store";
+import { toast } from "react-toastify";
 import { setMeetingUserRole } from "../state/features/liveInterview/liveInterview.slice";
+import { AppDispatch } from "../state/store";
+import { random6DigitCode } from "../utils/core.utils";
+import JoinRoomModal from "./JoinRoomModal";
 import WarningMobileValidation from "./WarningMobileValidation";
+import Style from './home.module.css';
 
 export default function Home() {
     const dispatch = useDispatch<AppDispatch>();
@@ -39,40 +40,76 @@ export default function Home() {
     }
 
     return (
-        <>
-            <Box sx={{
-                padding: 4,
-                height: "80vh",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 6
-            }}>
-                <Box>
-                    <img src={'/discushy_logo_banner.png'} alt="Logo" width={200} height={0} style={{ height: 'auto' }} />
-                    <Typography variant="body1" sx={{ my: 1 }}>Start or join a discussion room</Typography>
-                    <Button onClick={createRoom} startIcon={<AddIcon />}>Create New Room</Button>
+        <Box className={Style.pageWrapper}>
+            {/* Header */}
+            <Box component="header" className={Style.header}>
+                <Box className={Style.headerLogo}>
+                    <img src="/discushy_logo_banner.png" alt="Discushy" className={Style.headerLogoIcon} />
                 </Box>
-
-                <Box sx={{ marginTop: 4, border: '1px solid #ccc', borderRadius: 2, padding: 2 }}>
-                    <FormLabel>Join a Room</FormLabel>
-                    <br />
-                    <TextField
-                        placeholder="Enter Room ID"
-                        value={roomId}
-                        onChange={(e) => setRoomId(e.target.value)}
-                        autoComplete="off"
-                    />
-                    <br />
-                    <br />
-                    <Button variant="tonal" onClick={joinRoom}>Join Room</Button>
-                </Box>
-
             </Box>
-            <Box sx={{ position: 'absolute', bottom: 16, width: '100%', textAlign: 'center' }}>
-                <Divider />
-                <p>Developed By <a href="https://beetcoder.com" target="_blank">BeetCoder</a></p>
+
+            {/* Main Content */}
+            <Box component="main" className={Style.mainContent}>
+                {/* Left Section */}
+                <Box component="section" className={Style.leftSection}>
+                    <Box className={Style.brandLogo}>
+                        <img src="/discushy_Icon.png" alt="Discushy" className={Style.brandLogoIcon} />
+                        <Box className={Style.brandTextWrapper}>
+                            <Typography variant="h3" fontWeight={700} color="text.primary">Discushy</Typography>
+
+                        </Box>
+                    </Box>
+
+                    <Typography variant="h5" fontWeight={600} color="text.primary" sx={{ mb: 1 }}>
+                        Start or join a <Typography component="span" variant="h5" fontWeight={600} color="primary.main">discussion room</Typography>
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
+                        Free for everyone. Create a secure space and invite others with a single click.
+                    </Typography>
+
+                    <Button
+                        variant="contained"
+                        startIcon={<AddIcon />}
+                        onClick={createRoom}
+                        size="large"
+                        sx={{ borderRadius: 2, px: 3.5, py: 1.5 }}
+                    >
+                        Create New Room
+                    </Button>
+                </Box>
+
+                {/* Right Section - Join Card */}
+                <Box component="section" className={Style.rightSection}>
+                    <Box className={Style.joinCard}>
+                        <Box className={Style.joinCardHeader}>
+                            <LoginIcon />
+                            <Typography variant="h6" fontWeight={600}>
+                                Join a Room
+                            </Typography>
+                        </Box>
+
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>Enter Room ID</Typography>
+                        <TextField
+                            fullWidth
+                            placeholder="e.g. A1B2C3"
+                            value={roomId}
+                            onChange={(e) => setRoomId(e.target.value)}
+                            autoComplete="off"
+                            sx={{ mb: 2 }}
+                        />
+
+                        <Box className={Style.actionRow}>
+                            <Button variant="tonal" onClick={joinRoom}>Join Room</Button>
+                        </Box>
+                    </Box>
+                </Box>
+            </Box>
+
+            {/* Footer */}
+            <Box component="footer" className={Style.footer}>
+                <Typography variant="body2" color="text.secondary">
+                    Developed By <a href="https://beetcoder.com" target="_blank" rel="noopener noreferrer">BeetCoder</a>
+                </Typography>
             </Box>
 
             <ModalWithHeader
@@ -82,6 +119,6 @@ export default function Home() {
             >
                 <JoinRoomModal roomId={roomId} onClose={handleCloseModal} />
             </ModalWithHeader>
-        </>
+        </Box >
     );
 }
