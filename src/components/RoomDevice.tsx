@@ -1,4 +1,4 @@
-import { AudienceIcon, Button, ButtonGroup, MicrophoneOffSmallIcon, MicrophoneSmallIcon, Tooltip, VideoIcon, VideoOffIcon } from "convertupleads-theme";
+import { AudienceIcon, Button, ButtonGroup, MicrophoneOffSmallIcon, MicrophoneSmallIcon, Tooltip, VideoIcon, VideoOffIcon, Box } from "convertupleads-theme";
 import AirplayIcon from '@mui/icons-material/Airplay';
 import { useRef } from "react";
 import { IMeetingParticipant } from "../room.interface";
@@ -27,26 +27,41 @@ const RoomDevice = ({
     const anchorRef = useRef<HTMLDivElement | null>(null);
 
     return (
-        <>
+        <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            flexWrap: 'nowrap'
+        }}>
+            <Tooltip title={`People (${users.length + 1})`}>
+                <Button
+                    variant={'outlined'}
+                    color={'primary'}
+                    onClick={onPeopleDrawerToggle}
+                    sx={{
+                        minWidth: '36px',
+                        width: '36px',
+                        height: '36px',
+                        p: 1
+                    }}
+                >
+                    <AudienceIcon />
+                </Button>
+            </Tooltip>
+
             <Tooltip title={isScreenSharing ? "Stop Sharing" : "Share Screen"}>
                 <Button
                     variant={!isScreenSharing ? 'outlined' : 'tonal'}
                     color={!isScreenSharing ? 'primary' : 'error'}
                     onClick={onToggleScreenShare}
-                    sx={{ width: '20px', height: '36px' }}
+                    sx={{
+                        minWidth: '36px',
+                        width: '36px',
+                        height: '36px',
+                        p: 1
+                    }}
                 >
                     <AirplayIcon />
-                </Button>
-            </Tooltip>
-
-            <Tooltip title={`People (${users.length + 2})`}>
-                <Button
-                    variant={'outlined'}
-                    color={'primary'}
-                    onClick={onPeopleDrawerToggle}
-                    sx={{ width: '20px', height: '36px' }}
-                >
-                    <AudienceIcon />
                 </Button>
             </Tooltip>
 
@@ -55,50 +70,42 @@ const RoomDevice = ({
                 color={isCameraOn ? 'primary' : 'error'}
                 ref={anchorRef}
                 aria-label="split button"
+                sx={{ '& .MuiButtonGroup-grouped': { minWidth: '36px' } }}
             >
                 <Button
                     variant={isCameraOn ? 'outlined' : 'tonal'}
                     onClick={onToggleCamera}
-                    sx={{ width: '20px', height: '36px' }}
+                    sx={{
+                        minWidth: '36px',
+                        width: '36px',
+                        height: '36px',
+                        p: 1
+                    }}
                 >
                     {isCameraOn ? <VideoIcon /> : <VideoOffIcon />}
                 </Button>
-                {/* <Button
-                    size="small"
-                    // aria-controls={open ? "split-button-menu" : undefined}
-                    // aria-expanded={open ? "true" : undefined}
-                    aria-label="select merge strategy"
-                    aria-haspopup="menu"
-                // onClick={handleToggle}
-                >
-                    <ChevronDownIcon />
-                </Button> */}
             </ButtonGroup>
             <ButtonGroup
                 variant="outlined"
                 color={isMicOn ? 'primary' : 'error'}
                 ref={anchorRef}
                 aria-label="split button"
+                sx={{ '& .MuiButtonGroup-grouped': { minWidth: '36px' } }}
             >
                 <Button
                     variant={isMicOn ? 'outlined' : 'tonal'}
                     onClick={onToggleMic}
-                    sx={{ width: '20px', height: '36px' }}
+                    sx={{
+                        minWidth: '36px',
+                        width: '36px',
+                        height: '36px',
+                        p: 1
+                    }}
                 >
                     {isMicOn ? <MicrophoneSmallIcon /> : <MicrophoneOffSmallIcon />}
                 </Button>
-                {/* <Button
-                    size="small"
-                    // aria-controls={open ? "split-button-menu" : undefined}
-                    // aria-expanded={open ? "true" : undefined}
-                    aria-label="select merge strategy"
-                    aria-haspopup="menu"
-                // onClick={handleToggle}
-                >
-                    <ChevronDownIcon />
-                </Button> */}
             </ButtonGroup>
-        </>
+        </Box>
     )
 }
 

@@ -1,3 +1,98 @@
+/* ============================================
+   Room Container & Layout
+   ============================================ */
+.roomContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    /* Dynamic viewport height for mobile */
+    background-color: var(--background-default);
+    overflow: hidden;
+}
+
+.contentArea {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    flex-direction: column;
+    min-height: 0;
+}
+
+/* ============================================
+   Header Styles
+   ============================================ */
+.roomHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--divider);
+    background-color: var(--background-paper);
+    flex-shrink: 0;
+}
+
+.roomHeaderLogo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.roomHeaderLogoImg {
+    height: 50px;
+    width: auto;
+}
+
+.roomHeaderInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.roomHeaderControls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* ============================================
+   Video Grid Wrapper
+   ============================================ */
+.videoGridWrapper {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.videoGridWrapperHidden {
+    display: none;
+}
+
+/* ============================================
+   Video Container & Grid
+   ============================================ */
+.videoContainer {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    min-width: 0;
+}
+
+.videoGrid {
+    display: grid;
+    gap: 16px;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* ============================================
+   Video Wrapper (Individual Video Tiles)
+   ============================================ */
 .videoWrapper {
     position: relative;
     width: 100%;
@@ -31,23 +126,9 @@
     font-size: 16px;
 }
 
-.videoContainer {
-    flex: 1;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.videoGrid {
-    display: grid;
-    gap: 16px;
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-}
-
+/* ============================================
+   My Video Box (Self View)
+   ============================================ */
 .myVideoBox {
     height: 100%;
     width: 100%;
@@ -59,38 +140,17 @@
     align-items: center;
     justify-content: center;
     min-height: 0;
+    min-width: 0;
 }
 
-.myVoiceWave {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    border-radius: 50%;
-    height: 30px;
-    width: 30px;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+.myVideoBoxSpeaking {
+    border: 2px solid #2196F3;
+    transition: border-color 0.2s ease-in-out;
 }
 
-.myMutedIcon {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    border-radius: 50%;
-    height: 30px;
-    width: 30px;
-    padding: 0;
-    margin: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.myVideoBoxNotSpeaking {
+    border: 2px solid black;
+    transition: border-color 0.2s ease-in-out;
 }
 
 .myVideo {
@@ -133,6 +193,41 @@
     gap: 6px;
 }
 
+.myVoiceWave {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.myMutedIcon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    padding: 0;
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============================================
+   AI Avatar Box
+   ============================================ */
 .aiBox {
     height: 100%;
     width: 100%;
@@ -179,20 +274,9 @@
     gap: 6px;
 }
 
-.roomContainer {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    background-color: var(--background-default);
-}
-
-.contentArea {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-    flex-direction: column;
-}
-
+/* ============================================
+   Screen Share Container
+   ============================================ */
 .screenShareContainer {
     width: 100%;
     background-color: #1f1f1f;
@@ -201,10 +285,11 @@
     align-items: center;
     position: relative;
     border-bottom: 2px solid #333;
+    flex-shrink: 0;
 }
 
 .screenShareContainerDefault {
-    height: 75%;
+    height: 70%;
 }
 
 .screenShareContainerFull {
@@ -242,26 +327,27 @@
     font-weight: 500;
 }
 
-.videoGridWrapper {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-}
-
-.videoGridWrapperHidden {
+/* ============================================
+   Mobile Bottom Control Bar
+   ============================================ */
+.mobileControlBar {
     display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--background-paper, #fff);
+    border-top: 1px solid var(--divider, #e0e0e0);
+    padding: 12px 16px;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.myVideoBoxSpeaking {
-    border: 2px solid #2196F3;
-    transition: border-color 0.2s ease-in-out;
-}
-
-.myVideoBoxNotSpeaking {
-    border: 2px solid black;
-    transition: border-color 0.2s ease-in-out;
-}
-
+/* ============================================
+   Animations
+   ============================================ */
 @keyframes pulse {
 
     0%,
@@ -271,5 +357,285 @@
 
     50% {
         opacity: 0.5;
+    }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Desktop (1200px+) */
+@media (min-width: 1200px) {
+    .videoContainer {
+        padding: 20px;
+    }
+
+    .videoGrid {
+        gap: 20px;
+    }
+}
+
+/* Tablet Landscape (1024px - 1199px) */
+@media (max-width: 1199px) {
+    .videoContainer {
+        padding: 14px;
+    }
+
+    .videoGrid {
+        gap: 14px;
+    }
+
+    .myVideoLabel,
+    .aiAvatarLabel,
+    .screenShareLabel {
+        font-size: 13px;
+        padding: 3px 10px;
+    }
+}
+
+/* Tablet Portrait (768px - 1023px) */
+@media (max-width: 1024px) {
+    .roomHeader {
+        padding: 10px 16px;
+    }
+
+    .roomHeaderLogoImg {
+        height: 40px;
+    }
+
+    .roomHeaderControls {
+        gap: 12px;
+    }
+
+    .videoContainer {
+        padding: 12px;
+    }
+
+    .videoGrid {
+        gap: 12px;
+    }
+
+    .myVideoBox,
+    .aiBox {
+        border-radius: 10px;
+    }
+
+    .myOffCameraAvatar {
+        width: 72px;
+        height: 72px;
+        font-size: 28px;
+    }
+
+    .screenShareContainerDefault {
+        height: 60%;
+    }
+}
+
+/* Small Tablet / Large Mobile (600px - 767px) */
+@media (max-width: 768px) {
+    .roomHeader {
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .roomHeaderLogoImg {
+        height: 36px;
+    }
+
+    .roomHeaderControls {
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .videoContainer {
+        padding: 10px;
+        padding-bottom: 70px;
+    }
+
+    .videoGrid {
+        gap: 10px;
+    }
+
+    .myVideoBox,
+    .aiBox {
+        border-radius: 8px;
+    }
+
+    .myVideoLabel,
+    .aiAvatarLabel,
+    .screenShareLabel {
+        font-size: 12px;
+        padding: 2px 8px;
+        bottom: 8px;
+        left: 8px;
+    }
+
+    .myVoiceWave,
+    .myMutedIcon {
+        height: 26px;
+        width: 26px;
+        top: 8px;
+        right: 8px;
+    }
+
+    .myOffCameraAvatar {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
+
+    .screenShareContainerDefault {
+        height: 50%;
+    }
+
+    .aiContent {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    /* Show mobile control bar */
+    .mobileControlBar {
+        display: flex;
+    }
+}
+
+/* Mobile Landscape (480px - 599px) */
+@media (max-width: 600px) {
+    .roomHeader {
+        padding: 6px 10px;
+    }
+
+    .roomHeaderLogoImg {
+        height: 32px;
+    }
+
+    .roomHeaderControls {
+        gap: 6px;
+    }
+
+    .videoContainer {
+        padding: 8px;
+        padding-bottom: 70px;
+    }
+
+    .videoGrid {
+        gap: 8px;
+    }
+
+    .myVideoBox,
+    .aiBox {
+        border-radius: 6px;
+    }
+
+    .myVideoLabel,
+    .aiAvatarLabel,
+    .screenShareLabel {
+        font-size: 11px;
+        padding: 2px 6px;
+        bottom: 6px;
+        left: 6px;
+    }
+
+    .myVoiceWave,
+    .myMutedIcon {
+        height: 24px;
+        width: 24px;
+        top: 6px;
+        right: 6px;
+    }
+
+    .myOffCameraAvatar {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+
+    .screenShareContainerDefault {
+        height: 45%;
+    }
+
+    /* Show mobile control bar */
+    .mobileControlBar {
+        display: flex;
+    }
+}
+
+/* Mobile Portrait (< 480px) */
+@media (max-width: 480px) {
+    .roomHeader {
+        padding: 6px 8px;
+    }
+
+    .roomHeaderLogoImg {
+        height: 28px;
+    }
+
+    .roomHeaderInfo {
+        display: none;
+    }
+
+    .roomHeaderControls {
+        flex: 1;
+        justify-content: flex-end;
+        gap: 4px;
+    }
+
+    .videoContainer {
+        padding: 6px;
+        padding-bottom: 70px;
+    }
+
+    .videoGrid {
+        gap: 6px;
+    }
+
+    .myVideoBox,
+    .aiBox {
+        border-radius: 4px;
+    }
+
+    .myVideoLabel,
+    .aiAvatarLabel,
+    .screenShareLabel {
+        font-size: 10px;
+        padding: 2px 4px;
+        bottom: 4px;
+        left: 4px;
+        border-radius: 2px;
+    }
+
+    .myVoiceWave,
+    .myMutedIcon {
+        height: 22px;
+        width: 22px;
+        top: 4px;
+        right: 4px;
+    }
+
+    .myOffCameraAvatar {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .screenShareContainerDefault {
+        height: 40%;
+    }
+
+    .aiContent {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .aiName {
+        font-size: 14px;
+    }
+
+    /* Show mobile control bar */
+    .mobileControlBar {
+        display: flex;
+        padding: 10px 12px;
     }
 }

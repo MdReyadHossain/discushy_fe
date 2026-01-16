@@ -1,3 +1,6 @@
+/* ============================================
+   Page Wrapper
+   ============================================ */
 .pageWrapper {
     min-height: 100vh;
     display: flex;
@@ -5,6 +8,9 @@
     background-color: #f5f7fa;
 }
 
+/* ============================================
+   Header
+   ============================================ */
 .header {
     display: flex;
     justify-content: space-between;
@@ -22,6 +28,7 @@
 
 .headerLogoIcon {
     height: 52px;
+    width: auto;
 }
 
 .headerLogoText {
@@ -38,6 +45,9 @@
     color: #1a1a1a;
 }
 
+/* ============================================
+   Main Content
+   ============================================ */
 .mainContent {
     flex: 1;
     display: flex;
@@ -47,8 +57,12 @@
     gap: 80px;
 }
 
+/* ============================================
+   Left Section - Brand & CTA
+   ============================================ */
 .leftSection {
     max-width: 420px;
+    flex-shrink: 0;
 }
 
 .brandLogo {
@@ -61,6 +75,7 @@
 .brandLogoIcon {
     width: 80px;
     height: 80px;
+    flex-shrink: 0;
 }
 
 .brandTextWrapper {
@@ -150,8 +165,12 @@
     color: #666;
 }
 
+/* ============================================
+   Right Section - Join Card
+   ============================================ */
 .rightSection {
     width: 340px;
+    flex-shrink: 0;
 }
 
 .joinCard {
@@ -227,7 +246,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
 }
 
 .joinRoomBtn {
@@ -306,6 +324,9 @@
     height: 18px;
 }
 
+/* ============================================
+   Footer
+   ============================================ */
 .footer {
     text-align: center;
     padding: 20px;
@@ -313,4 +334,211 @@
     font-size: 13px;
     border-top: 1px solid #e0e0e0;
     background-color: white;
+}
+
+.footer a {
+    color: #2196F3;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer a:hover {
+    color: #1976D2;
+    text-decoration: underline;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Large Desktop (1400px+) */
+@media (min-width: 1400px) {
+    .mainContent {
+        gap: 120px;
+        padding: 64px;
+    }
+
+    .leftSection {
+        max-width: 480px;
+    }
+
+    .rightSection {
+        width: 380px;
+    }
+}
+
+/* Desktop (1024px - 1399px) */
+@media (max-width: 1200px) {
+    .mainContent {
+        gap: 60px;
+        padding: 40px;
+    }
+
+    .leftSection {
+        max-width: 380px;
+    }
+
+    .rightSection {
+        width: 320px;
+    }
+}
+
+/* Tablet Landscape (768px - 1023px) */
+@media (max-width: 1024px) {
+    .header {
+        padding: 14px 24px;
+    }
+
+    .headerLogoIcon {
+        height: 44px;
+    }
+
+    .mainContent {
+        flex-direction: column;
+        gap: 40px;
+        padding: 32px 24px;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .leftSection {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .brandLogo {
+        justify-content: center;
+        margin-bottom: 24px;
+    }
+
+    .brandLogoIcon {
+        width: 64px;
+        height: 64px;
+    }
+
+    .rightSection {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .joinCard {
+        padding: 24px;
+    }
+}
+
+/* Tablet Portrait (600px - 767px) */
+@media (max-width: 768px) {
+    .header {
+        padding: 12px 20px;
+    }
+
+    .headerLogoIcon {
+        height: 40px;
+    }
+
+    .mainContent {
+        padding: 24px 20px;
+        gap: 32px;
+    }
+
+    .brandLogo {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .brandLogoIcon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .rightSection {
+        max-width: 100%;
+    }
+
+    .joinCard {
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .footer {
+        padding: 16px;
+    }
+}
+
+/* Mobile Landscape (480px - 599px) */
+@media (max-width: 600px) {
+    .header {
+        padding: 12px 16px;
+    }
+
+    .headerLogoIcon {
+        height: 36px;
+    }
+
+    .mainContent {
+        padding: 20px 16px;
+        gap: 24px;
+    }
+
+    .brandLogoIcon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .joinCard {
+        padding: 18px;
+    }
+
+    .joinCardHeader {
+        margin-bottom: 16px;
+    }
+
+    .actionRow {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .actionRow button {
+        width: 100%;
+    }
+}
+
+/* Mobile Portrait (< 480px) */
+@media (max-width: 480px) {
+    .header {
+        padding: 10px 12px;
+    }
+
+    .headerLogoIcon {
+        height: 32px;
+    }
+
+    .mainContent {
+        padding: 16px 12px;
+        gap: 20px;
+    }
+
+    .brandLogo {
+        margin-bottom: 16px;
+    }
+
+    .brandLogoIcon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .joinCard {
+        padding: 16px;
+        border-radius: 8px;
+    }
+
+    .joinCardHeader {
+        margin-bottom: 14px;
+        gap: 8px;
+    }
+
+    .footer {
+        padding: 14px 12px;
+        font-size: 12px;
+    }
 }

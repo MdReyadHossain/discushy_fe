@@ -72,7 +72,7 @@ export default function Home() {
                         startIcon={<AddIcon />}
                         onClick={createRoom}
                         size="large"
-                        sx={{ borderRadius: 2, px: 3.5, py: 1.5 }}
+                        sx={{ px: 3.5, py: 1.5 }}
                     >
                         Create New Room
                     </Button>

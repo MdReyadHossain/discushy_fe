@@ -1,14 +1,16 @@
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
-import { Avatar, Box, DrawerWithHeader, IconButton, MicrophoneOffSmallIcon } from "convertupleads-theme";
+import { Avatar, Box, Button, CallMissedIcon, DrawerWithHeader, IconButton, MicrophoneOffSmallIcon } from "convertupleads-theme";
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import { useParams } from "react-router-dom";
 import WaveAnimation from '../assets/WaveAnimation';
 import useWebRTC from "../hooks/useWebRTC";
+import { socket } from '../socket';
 import { selectMeetingState } from '../state/features/liveInterview/liveInterview.selector';
 import { isEmpty } from '../utils/core.utils';
 import PeopleBar from './PeopleBar';
+import RoomDevice from './RoomDevice';
 import RoomHeader from "./RoomHeader";
 import Style from './room.module.css';
 
@@ -103,19 +105,19 @@ export default function Room() {
                             className={Style.videoGrid}
                             sx={{
                                 gridTemplateColumns: screenShareStream
-                                    ? "repeat(6, 1fr)"
+                                    ? { xs: "repeat(2, 1fr)", sm: "repeat(3, 1fr)", md: "repeat(4, 1fr)", lg: "repeat(6, 1fr)" }
                                     : users.length === 0
                                         ? "repeat(1, 1fr)"
                                         : users.length === 1
-                                            ? "repeat(2, 1fr)"
+                                            ? { xs: "repeat(1, 1fr)", sm: "repeat(2, 1fr)" }
                                             : users.length === 2
-                                                ? "repeat(2, 1fr)"
-                                                : "repeat(3, 1fr)",
+                                                ? { xs: "repeat(1, 1fr)", sm: "repeat(2, 1fr)" }
+                                                : { xs: "repeat(1, 1fr)", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)" },
                                 gridTemplateRows: screenShareStream
                                     ? "1fr"
                                     : users.length <= 1
                                         ? "1fr"
-                                        : "repeat(2, 1fr)",
+                                        : { xs: "auto", sm: "repeat(2, 1fr)" },
                                 gridAutoRows: "1fr"
                             }}
                         >
@@ -135,9 +137,9 @@ export default function Room() {
                                     <Box className={Style.myOffCameraBox}>
                                         <Avatar size="large" sx={{
                                             bgcolor: 'primary.main',
-                                            width: "86px",
-                                            height: "86px",
-                                            fontSize: 36,
+                                            width: { xs: "56px", sm: "72px", md: "86px" },
+                                            height: { xs: "56px", sm: "72px", md: "86px" },
+                                            fontSize: { xs: 24, sm: 30, md: 36 },
                                             boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
                                         }}>
                                             {(meetingUser.name || 'You').charAt(0).toUpperCase()}
@@ -149,7 +151,7 @@ export default function Room() {
                                 </Box>
                                 {!isMicOn ? (
                                     <Box className={Style.myMutedIcon}>
-                                        <MicrophoneOffSmallIcon sx={{ fontSize: 20 }} />
+                                        <MicrophoneOffSmallIcon sx={{ fontSize: { xs: 16, sm: 18, md: 20 } }} />
                                     </Box>
                                 ) : (isMeSpeaking) && (
                                     <Box className={Style.myVoiceWave}>
@@ -185,7 +187,7 @@ export default function Room() {
 
                     <DrawerWithHeader
                         anchor="right"
-                        header={`People (${users.length + 2})`}
+                        header={`People (${users.length + 1})`}
                         open={isPeopleDrawerOpen}
                         onClose={() => setIsPeopleDrawerOpen(false)}
                     >
@@ -197,6 +199,49 @@ export default function Room() {
                             onToggleMic={toggleMic}
                         />
                     </DrawerWithHeader>
+                </Box>
+            </Box>
+
+            {/* Mobile Bottom Control Bar */}
+            <Box className={Style.mobileControlBar}>
+                <RoomDevice
+                    users={users}
+                    isCameraOn={isCameraOn}
+                    isMicOn={isMicOn}
+                    isScreenSharing={isScreenSharing}
+                    onToggleCamera={toggleCamera}
+                    onToggleMic={toggleMic}
+                    onToggleScreenShare={toggleScreenShare}
+                    onPeopleDrawerToggle={() => setIsPeopleDrawerOpen(true)}
+                />
+                <Box sx={{ display: 'flex', gap: 1, ml: 1 }}>
+                    {meetingUser.role === 'host' &&
+                        <Button
+                            onClick={endMeeting}
+                            color="warning"
+                            size="small"
+                            sx={{ fontSize: 12, px: 1.5 }}
+                        >
+                            End Meeting
+                        </Button>
+                    }
+                    <Button
+                        onClick={() => {
+                            socket.disconnect();
+                            window.location.assign('/');
+                        }}
+                        variant='contained'
+                        color="error"
+                        size="small"
+                        sx={{
+                            minWidth: '36px',
+                            width: '36px',
+                            height: '36px',
+                            p: 1
+                        }}
+                    >
+                        <CallMissedIcon sx={{ fontSize: 16 }} />
+                    </Button>
                 </Box>
             </Box>
         </Box>

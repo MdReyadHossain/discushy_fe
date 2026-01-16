@@ -13,7 +13,7 @@ interface IProps {
 const PeopleBar = ({ voiceModel, role, isMicOn, users, onToggleMic }: IProps) => {
     console.log('voiceModel #', voiceModel);
     return (
-        <Box sx={{ width: 260, borderLeft: 1, borderColor: "divider", display: "flex", flexDirection: "column" }}>
+        <Box sx={{ borderLeft: 1, borderColor: "divider", display: "flex", flexDirection: "column" }}>
             {/* <Box sx={{ px: 2, py: 1.5, borderBottom: 1, borderColor: "divider", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box sx={{ fontWeight: 600 }}>People ({[myUserId, ...Array.from(new Set(users))].length} / 4)</Box>
             </Box> */}

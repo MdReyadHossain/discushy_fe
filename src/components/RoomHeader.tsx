@@ -58,44 +58,127 @@ const RoomHeader = ({ users, roomId, isCameraOn, isMicOn, isScreenSharing, onEnd
     }, []);
     return (
         <>
-            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", px: 3, py: 2, borderBottom: 1, borderColor: "divider" }}>
+            <Box sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                px: 3,
+                py: 2,
+                borderBottom: 1,
+                borderColor: "divider",
+                flexWrap: { xs: 'wrap', md: 'nowrap' },
+                gap: { xs: 1, md: 0 }
+            }}>
                 <Stack direction={'row'} alignItems={'center'} gap={2}>
-                    <img src={'/discushy_Icon.png'} alt="Logo" width={50} height={0} style={{ height: 'auto' }} />
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <Box sx={{ fontWeight: 600 }}>Discushy</Box>
-                        <Stack direction="row" alignItems="center" spacing={1}>
-                            <Box sx={{ color: "text.secondary", fontSize: 13 }}>Room ID: {roomId}</Box>
-                            <IconButton size="small" color="info" onClick={handleCopyRoomUrl}><CopyIcon /></IconButton> or
-                            <Button
-                                variant="noPadding"
-                                color="info"
-                                onClick={() => setInviteModalOpen(true)}
-                            >
-                                Invite
-                            </Button>
+                    <img
+                        src={'/discushy_Icon.png'}
+                        alt="Logo"
+                        style={{
+                            height: 'auto',
+                            width: 'auto',
+                            maxHeight: '50px',
+                            minHeight: '32px'
+                        }}
+                    />
+                    <Box sx={{
+                        display: "flex",
+                        flexDirection: "column"
+                    }}>
+                        <Box sx={{ fontWeight: 600, fontSize: 16 }}>Discushy</Box>
+                        <Stack direction="row" alignItems="center" spacing={0.5}>
+                            <Box sx={{
+                                color: "text.secondary",
+                                fontSize: 13,
+                                whiteSpace: 'nowrap'
+                            }}>
+                                Room: {roomId}
+                            </Box>
+                            <IconButton size="small" color="info" onClick={handleCopyRoomUrl}>
+                                <CopyIcon sx={{ fontSize: 18 }} />
+                            </IconButton>
+                            <Box sx={{ display: { xs: 'none', md: 'inline' } }}>
+                                <Box sx={{ display: 'inline' }}>or </Box>
+                                <Button
+                                    variant="noPadding"
+                                    color="info"
+                                    onClick={() => setInviteModalOpen(true)}
+                                    sx={{ fontSize: 14 }}
+                                >
+                                    Invite
+                                </Button>
+                            </Box>
                         </Stack>
                     </Box>
                 </Stack>
 
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Box sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                    flexWrap: 'wrap',
+                    justifyContent: 'flex-end'
+                }}>
                     <audio id="sofia-audio" style={{ display: 'none' }} controls autoPlay />
-                    {/* <Button variant="tonal" onClick={handleSpeakSofia}>Sofia</Button> */}
-                    <Box sx={{ px: 2, py: 0.75, borderRadius: 1, bgcolor: "action.hover" }}>{currentTime}</Box>
-                    <Box sx={{ px: 2, py: 0.75, borderRadius: 1, bgcolor: "action.hover" }}>{meetingUser.name}</Box>
-                    <RoomDevice
-                        users={users}
-                        isCameraOn={isCameraOn}
-                        isMicOn={isMicOn}
-                        isScreenSharing={isScreenSharing}
-                        onToggleCamera={onToggleCamera}
-                        onToggleMic={onToggleMic}
-                        onToggleScreenShare={onToggleScreenShare}
-                        onPeopleDrawerToggle={onPeopleDrawerToggle}
-                    />
+                    <Box sx={{
+                        px: 2,
+                        py: 0.75,
+                        borderRadius: 1,
+                        bgcolor: "action.hover",
+                        fontSize: 14,
+                        display: { xs: 'none', sm: 'block' }
+                    }}>
+                        {currentTime}
+                    </Box>
+                    <Box sx={{
+                        px: 2,
+                        py: 0.75,
+                        borderRadius: 1,
+                        bgcolor: "action.hover",
+                        fontSize: 14,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                    }}>
+                        {meetingUser.name}
+                    </Box>
+                    {/* Hide RoomDevice on mobile - it appears in bottom bar */}
+                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                        <RoomDevice
+                            users={users}
+                            isCameraOn={isCameraOn}
+                            isMicOn={isMicOn}
+                            isScreenSharing={isScreenSharing}
+                            onToggleCamera={onToggleCamera}
+                            onToggleMic={onToggleMic}
+                            onToggleScreenShare={onToggleScreenShare}
+                            onPeopleDrawerToggle={onPeopleDrawerToggle}
+                        />
+                    </Box>
                     {meetingUser.role == 'host' &&
-                        <Button onClick={() => setEndMeetingModal(true)} color="warning">End Meeting</Button>
+                        <Button
+                            onClick={() => setEndMeetingModal(true)}
+                            color="warning"
+                            sx={{
+                                display: { xs: 'none', md: 'inline-flex' },
+                                fontSize: 14,
+                                px: 2
+                            }}
+                        >
+                            End Meeting
+                        </Button>
                     }
-                    <Button onClick={handleLeaveMeeting} startIcon={<CallMissedIcon />} color="error">Leave</Button>
+                    <Button
+                        onClick={handleLeaveMeeting}
+                        startIcon={<CallMissedIcon />}
+                        color="error"
+                        sx={{
+                            display: { xs: 'none', md: 'inline-flex' },
+                            fontSize: 14,
+                            px: 2
+                        }}
+                    >
+                        Leave
+                    </Button>
                 </Box>
             </Box>
 
@@ -109,7 +192,7 @@ const RoomHeader = ({ users, roomId, isCameraOn, isMicOn, isScreenSharing, onEnd
             />
 
             <ModalWithHeader title="Invite People" open={inviteModalOpen} onClose={() => setInviteModalOpen(false)}>
-                <Box sx={{ p: 2 }}>
+                <Box sx={{ p: { xs: 1.5, sm: 2 } }}>
                     <Box sx={{ fontWeight: 600 }}>
                         <TextField
                             placeholder={DEFAULT_INVITE_MESSAGE(roomId)}
@@ -121,7 +204,7 @@ const RoomHeader = ({ users, roomId, isCameraOn, isMicOn, isScreenSharing, onEnd
                         />
                     </Box>
                     <Divider light />
-                    <Stack direction={'row'} justifyContent={'flex-end'} my={2} mx={2} spacing={1.3}>
+                    <Stack direction={'row'} justifyContent={'flex-end'} my={2} mx={{ xs: 1, sm: 2 }} spacing={1.3}>
                         <Button onClick={() => setInviteModalOpen(false)} variant="outlined" size="medium">
                             Close
                         </Button>
