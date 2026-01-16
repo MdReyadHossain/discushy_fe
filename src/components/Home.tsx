@@ -6,7 +6,6 @@ import { setMeetingUserRole } from "../state/features/liveInterview/liveIntervie
 import { AppDispatch } from "../state/store";
 import { random6DigitCode } from "../utils/core.utils";
 import JoinRoomModal from "./JoinRoomModal";
-import WarningMobileValidation from "./WarningMobileValidation";
 import Style from './home.module.css';
 
 export default function Home() {
@@ -35,9 +34,9 @@ export default function Home() {
         setRoomId("");
     }
 
-    if (window.innerWidth < 768) {
-        return <WarningMobileValidation />;
-    }
+    // if (window.innerWidth < 768) {
+    //     return <WarningMobileValidation />;
+    // }
 
     return (
         <Box className={Style.pageWrapper}>
