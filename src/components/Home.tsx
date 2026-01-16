@@ -7,6 +7,7 @@ import { AppDispatch } from "../state/store";
 import { random6DigitCode } from "../utils/core.utils";
 import JoinRoomModal from "./JoinRoomModal";
 import Style from './home.module.css';
+import WarningMobileValidation from "./WarningMobileValidation";
 
 export default function Home() {
     const dispatch = useDispatch<AppDispatch>();
@@ -34,9 +35,9 @@ export default function Home() {
         setRoomId("");
     }
 
-    // if (window.innerWidth < 768) {
-    //     return <WarningMobileValidation />;
-    // }
+    if (window.innerWidth < 768) {
+        return <WarningMobileValidation />;
+    }
 
     return (
         <Box className={Style.pageWrapper}>

@@ -92,7 +92,8 @@ export default function Room() {
                                 bgcolor: 'rgba(0,0,0,0.7)',
                                 color: 'white',
                                 fontSize: 14,
-                                fontWeight: 500
+                                fontWeight: 500,
+                                display: { xs: 'none', md: 'inline-flex' }
                             }}
                             onClick={() => setIsSharedScreenFull(prev => !prev)}
                         >

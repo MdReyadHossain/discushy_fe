@@ -158,6 +158,7 @@ const RoomDevice = ({
             <Button
                 variant={isCameraOn ? 'outlined' : 'tonal'}
                 onClick={onToggleCamera}
+                color={isCameraOn ? 'primary' : 'error'}
                 sx={{
                     minWidth: '36px',
                     width: '36px',
@@ -172,6 +173,7 @@ const RoomDevice = ({
             <Button
                 variant={isMicOn ? 'outlined' : 'tonal'}
                 onClick={onToggleMic}
+                color={isMicOn ? 'primary' : 'error'}
                 sx={{
                     minWidth: '36px',
                     width: '36px',
