@@ -36,6 +36,8 @@ export default function Room() {
         toggleCamera,
         toggleMic,
         toggleScreenShare,
+        switchCamera,
+        switchMicrophone,
         isMeSpeaking
     } = useWebRTC(roomId || '');
     const [isSharedScreenFull, setIsSharedScreenFull] = useState<boolean>(false);
@@ -61,6 +63,8 @@ export default function Room() {
                 onToggleMic={toggleMic}
                 onToggleScreenShare={toggleScreenShare}
                 onPeopleDrawerToggle={() => setIsPeopleDrawerOpen(true)}
+                onCameraChange={switchCamera}
+                onMicChange={switchMicrophone}
             />
 
             {/* Content Area */}
@@ -213,6 +217,8 @@ export default function Room() {
                     onToggleMic={toggleMic}
                     onToggleScreenShare={toggleScreenShare}
                     onPeopleDrawerToggle={() => setIsPeopleDrawerOpen(true)}
+                    onCameraChange={switchCamera}
+                    onMicChange={switchMicrophone}
                 />
                 <Box sx={{ display: 'flex', gap: 1, ml: 1 }}>
                     {meetingUser.role === 'host' &&
@@ -220,7 +226,6 @@ export default function Room() {
                             onClick={endMeeting}
                             color="warning"
                             size="small"
-                            sx={{ fontSize: 12, px: 1.5 }}
                         >
                             End Meeting
                         </Button>

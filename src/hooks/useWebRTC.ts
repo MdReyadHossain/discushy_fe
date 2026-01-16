@@ -222,6 +222,113 @@ export default function useWebRTC(roomId: string) {
         });
     };
 
+    const switchCamera = async (deviceId: string) => {
+        try {
+            const newStream = await navigator.mediaDevices.getUserMedia({
+                video: { deviceId: { exact: deviceId } },
+                audio: false
+            });
+
+            const newVideoTrack = newStream.getVideoTracks()[0];
+
+            if (streamRef.current) {
+                const oldVideoTrack = streamRef.current.getVideoTracks()[0];
+                if (oldVideoTrack) {
+                    oldVideoTrack.stop();
+                    streamRef.current.removeTrack(oldVideoTrack);
+                }
+                streamRef.current.addTrack(newVideoTrack);
+
+                // Update video element
+                if (myVideoRef.current) {
+                    myVideoRef.current.srcObject = streamRef.current;
+                }
+
+                // Apply current camera state
+                newVideoTrack.enabled = isCameraOnRef.current;
+
+                // Update mixed stream for peers
+                if (mixedStreamRef.current) {
+                    const oldMixedVideoTrack = mixedStreamRef.current.getVideoTracks()[0];
+                    if (oldMixedVideoTrack) {
+                        mixedStreamRef.current.removeTrack(oldMixedVideoTrack);
+                    }
+                    mixedStreamRef.current.addTrack(newVideoTrack);
+
+                    // Replace track in all peer connections
+                    Object.values(peersRef.current).forEach((call: any) => {
+                        const sender = call.peerConnection?.getSenders()?.find((s: RTCRtpSender) => s.track?.kind === 'video');
+                        if (sender) {
+                            sender.replaceTrack(newVideoTrack);
+                        }
+                    });
+                }
+            }
+        } catch (error) {
+            console.error('Error switching camera:', error);
+        }
+    };
+
+    const switchMicrophone = async (deviceId: string) => {
+        try {
+            const newStream = await navigator.mediaDevices.getUserMedia({
+                video: false,
+                audio: { deviceId: { exact: deviceId } }
+            });
+
+            const newAudioTrack = newStream.getAudioTracks()[0];
+
+            if (streamRef.current) {
+                const oldAudioTrack = streamRef.current.getAudioTracks()[0];
+                if (oldAudioTrack) {
+                    oldAudioTrack.stop();
+                    streamRef.current.removeTrack(oldAudioTrack);
+                }
+                streamRef.current.addTrack(newAudioTrack);
+
+                // Apply current mic state
+                newAudioTrack.enabled = isMicOnRef.current;
+
+                // Update the audio analyser for speaking detection
+                removeAnalyser(userId);
+                const localAnalyser = createAudioAnalyser(streamRef.current, userId, true);
+                startSpeakingDetection(localAnalyser);
+
+                // Reinitialize audio mixer with new mic
+                if (audioContextRef.current && mixedStreamRef.current) {
+                    const destination = audioContextRef.current.createMediaStreamDestination();
+
+                    const micSource = audioContextRef.current.createMediaStreamSource(new MediaStream([newAudioTrack]));
+                    const micGain = audioContextRef.current.createGain();
+                    micGain.gain.value = 1.0;
+                    micSource.connect(micGain);
+                    micGain.connect(destination);
+
+                    if (sofiaGainNodeRef.current) {
+                        sofiaGainNodeRef.current.connect(destination);
+                    }
+
+                    const mixedAudioTrack = destination.stream.getAudioTracks()[0];
+                    const oldMixedAudioTrack = mixedStreamRef.current.getAudioTracks()[0];
+                    if (oldMixedAudioTrack) {
+                        mixedStreamRef.current.removeTrack(oldMixedAudioTrack);
+                    }
+                    mixedStreamRef.current.addTrack(mixedAudioTrack);
+
+                    // Replace track in all peer connections
+                    Object.values(peersRef.current).forEach((call: any) => {
+                        const sender = call.peerConnection?.getSenders()?.find((s: RTCRtpSender) => s.track?.kind === 'audio');
+                        if (sender) {
+                            sender.replaceTrack(mixedAudioTrack);
+                        }
+                    });
+                }
+            }
+        } catch (error) {
+            console.error('Error switching microphone:', error);
+        }
+    };
+
     const toggleScreenShare = async () => {
         try {
             if (!isScreenSharingRef.current) {
@@ -666,6 +773,8 @@ export default function useWebRTC(roomId: string) {
         toggleCamera,
         toggleMic,
         toggleScreenShare,
+        switchCamera,
+        switchMicrophone,
         isCameraOn: isCameraOnRef.current,
         isMicOn: isMicOnRef.current,
         isScreenSharing: isScreenSharingRef.current,

@@ -19,9 +19,11 @@ interface IProps {
     onToggleMic: () => void;
     onToggleScreenShare: () => void;
     onPeopleDrawerToggle?: () => void;
+    onCameraChange?: (deviceId: string) => void;
+    onMicChange?: (deviceId: string) => void;
 }
 
-const RoomHeader = ({ users, roomId, isCameraOn, isMicOn, isScreenSharing, onEndMeeting, onToggleCamera, onToggleMic, onToggleScreenShare, onPeopleDrawerToggle }: IProps) => {
+const RoomHeader = ({ users, roomId, isCameraOn, isMicOn, isScreenSharing, onEndMeeting, onToggleCamera, onToggleMic, onToggleScreenShare, onPeopleDrawerToggle, onCameraChange, onMicChange }: IProps) => {
     const { meetingUser } = useSelector(selectMeetingState);
     const [currentTime, setCurrentTime] = useState<string>(new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
     const [endMeetingModal, setEndMeetingModal] = useState<boolean>(false);
@@ -91,7 +93,7 @@ const RoomHeader = ({ users, roomId, isCameraOn, isMicOn, isScreenSharing, onEnd
                                 fontSize: 13,
                                 whiteSpace: 'nowrap'
                             }}>
-                                Room: {roomId}
+                                Room ID: {roomId}
                             </Box>
                             <IconButton size="small" color="info" onClick={handleCopyRoomUrl}>
                                 <CopyIcon sx={{ fontSize: 18 }} />
@@ -152,6 +154,8 @@ const RoomHeader = ({ users, roomId, isCameraOn, isMicOn, isScreenSharing, onEnd
                             onToggleMic={onToggleMic}
                             onToggleScreenShare={onToggleScreenShare}
                             onPeopleDrawerToggle={onPeopleDrawerToggle}
+                            onCameraChange={onCameraChange}
+                            onMicChange={onMicChange}
                         />
                     </Box>
                     {meetingUser.role == 'host' &&

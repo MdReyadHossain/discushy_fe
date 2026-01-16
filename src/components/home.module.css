@@ -73,7 +73,6 @@
 }
 
 .brandLogoIcon {
-    width: 80px;
     height: 80px;
     flex-shrink: 0;
 }
@@ -412,7 +411,6 @@
     }
 
     .brandLogoIcon {
-        width: 64px;
         height: 64px;
     }
 
@@ -447,7 +445,6 @@
     }
 
     .brandLogoIcon {
-        width: 56px;
         height: 56px;
     }
 
@@ -481,7 +478,6 @@
     }
 
     .brandLogoIcon {
-        width: 48px;
         height: 48px;
     }
 
@@ -523,7 +519,6 @@
     }
 
     .brandLogoIcon {
-        width: 40px;
         height: 40px;
     }
 

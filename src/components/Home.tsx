@@ -42,22 +42,22 @@ export default function Home() {
     return (
         <Box className={Style.pageWrapper}>
             {/* Header */}
-            <Box component="header" className={Style.header}>
+            {/* <Box component="header" className={Style.header}>
                 <Box className={Style.headerLogo}>
                     <img src="/discushy_logo_banner.png" alt="Discushy" className={Style.headerLogoIcon} />
                 </Box>
-            </Box>
+            </Box> */}
 
             {/* Main Content */}
             <Box component="main" className={Style.mainContent}>
                 {/* Left Section */}
                 <Box component="section" className={Style.leftSection}>
                     <Box className={Style.brandLogo}>
-                        <img src="/discushy_Icon.png" alt="Discushy" className={Style.brandLogoIcon} />
-                        <Box className={Style.brandTextWrapper}>
+                        <img src="/discushy_logo_banner.png" alt="Discushy" className={Style.brandLogoIcon} />
+                        {/* <Box className={Style.brandTextWrapper}>
                             <Typography variant="h3" fontWeight={700} color="text.primary">Discushy</Typography>
 
-                        </Box>
+                        </Box> */}
                     </Box>
 
                     <Typography variant="h5" fontWeight={600} color="text.primary" sx={{ mb: 1 }}>
