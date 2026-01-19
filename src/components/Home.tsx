@@ -5,9 +5,8 @@ import { toast } from "react-toastify";
 import { setMeetingUserRole } from "../state/features/liveInterview/liveInterview.slice";
 import { AppDispatch } from "../state/store";
 import { random6DigitCode } from "../utils/core.utils";
-import JoinRoomModal from "./JoinRoomModal";
 import Style from './home.module.css';
-import WarningMobileValidation from "./WarningMobileValidation";
+import JoinRoomModal from "./JoinRoomModal";
 
 export default function Home() {
     const dispatch = useDispatch<AppDispatch>();
@@ -35,9 +34,9 @@ export default function Home() {
         setRoomId("");
     }
 
-    if (window.innerWidth < 768) {
-        return <WarningMobileValidation />;
-    }
+    // if (window.innerWidth < 768) {
+    //     return <WarningMobileValidation />;
+    // }
 
     return (
         <Box className={Style.pageWrapper}>
